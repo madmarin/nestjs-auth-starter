@@ -1,19 +1,19 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-export const setupSwagger = (app: INestApplication): void => {
+export const setupSwagger = (app: INestApplication, port: number): void => {
   const config = new DocumentBuilder()
-    .setTitle('ProtejoApp API')
-    .setDescription('ProtejoApp Authentication API - Backend Service')
+    .setTitle('NestJS Auth Starter API')
+    .setDescription('NestJS Auth Starter — JWT Authentication API')
     .setVersion('1.0.0')
-    .addServer('http://localhost:3000', 'Development Server')
+    .addServer(`http://localhost:${port}`, 'Development Server')
     .addBearerAuth(
       {
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
         name: 'JWT',
-        description: 'Ingresa tu JWT token (sin el prefijo Bearer)',
+        description: 'Enter your JWT token (without the Bearer prefix)',
         in: 'header',
       },
       'JWT-auth',
@@ -29,7 +29,7 @@ export const setupSwagger = (app: INestApplication): void => {
       docExpansion: 'none',
       showRequestDuration: true,
     },
-    customSiteTitle: 'ProtejoApp | API Docs',
+    customSiteTitle: 'NestJS Auth Starter | API Docs',
     customCss: `
       .swagger-ui .topbar { display: none; }
       .swagger-ui .info { margin: 20px 0; }

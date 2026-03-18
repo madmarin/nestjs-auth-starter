@@ -24,7 +24,7 @@ async function bootstrap() {
     defaultVersion: '1',
   });
 
-  setupSwagger(app);
+  setupSwagger(app, envs.port);
 
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new AllExceptionsFilter());
