@@ -11,8 +11,8 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/your-org/nestjs-auth-starter/actions/workflows/ci.yml/badge.svg" alt="CI" />
-  <img src="https://github.com/your-org/nestjs-auth-starter/actions/workflows/docker.yml/badge.svg" alt="Docker" />
+  <img src="https://github.com/madmarin/nestjs-auth-starter/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  <img src="https://github.com/madmarin/nestjs-auth-starter/actions/workflows/docker.yml/badge.svg" alt="Docker" />
   <img src="https://img.shields.io/badge/NestJS-11-E0234E?logo=nestjs" alt="NestJS" />
   <img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript" alt="TypeScript" />
   <img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql" alt="PostgreSQL" />
@@ -37,17 +37,17 @@
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | NestJS 11 |
-| Language | TypeScript 5 |
-| Database | PostgreSQL 16 |
-| Cache / Sessions | Redis 7 |
-| ORM | TypeORM 0.3 |
-| Auth | JWT + bcryptjs |
-| Docs | Swagger / OpenAPI |
-| Runtime | Node.js 22 LTS |
-| Package manager | pnpm |
+| Layer            | Technology        |
+| ---------------- | ----------------- |
+| Framework        | NestJS 11         |
+| Language         | TypeScript 5      |
+| Database         | PostgreSQL 16     |
+| Cache / Sessions | Redis 7           |
+| ORM              | TypeORM 0.3       |
+| Auth             | JWT + bcryptjs    |
+| Docs             | Swagger / OpenAPI |
+| Runtime          | Node.js 22 LTS    |
+| Package manager  | pnpm              |
 
 ## Project Structure
 
@@ -87,7 +87,7 @@ src/
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/your-org/nestjs-auth-starter.git my-project
+git clone https://github.com/madmarin/nestjs-auth-starter.git my-project
 cd my-project
 pnpm install
 ```
@@ -134,6 +134,7 @@ docker compose up -d
 ```
 
 This starts:
+
 - **PostgreSQL** on port `5433`
 - **Redis** on the configured `REDIS_PORT`
 - **API** on port `4002` (maps to internal `4000`)
@@ -150,12 +151,12 @@ pnpm start:dev
 
 Once running, visit **[http://localhost:4002/api](http://localhost:4002/api)** for the full Swagger UI.
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/auth/register` | Create a new account |
-| `POST` | `/auth/login` | Login, returns access + refresh tokens |
-| `POST` | `/auth/refresh` | Exchange refresh token for a new access token |
-| `POST` | `/auth/logout` | Invalidate the current session |
+| Method | Path             | Description                                   |
+| ------ | ---------------- | --------------------------------------------- |
+| `POST` | `/auth/register` | Create a new account                          |
+| `POST` | `/auth/login`    | Login, returns access + refresh tokens        |
+| `POST` | `/auth/refresh`  | Exchange refresh token for a new access token |
+| `POST` | `/auth/logout`   | Invalidate the current session                |
 
 ## Scripts
 
