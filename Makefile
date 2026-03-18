@@ -1,6 +1,6 @@
 .PHONY: help dev-up dev-build dev-down
 
-COMPOSE := docker compose -f docker-compose.yml --env-file .env.development
+COMPOSE := docker compose -f docker-compose.development.yml --env-file .env.development
 
 
 help:
