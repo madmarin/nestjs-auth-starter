@@ -95,10 +95,10 @@ pnpm install
 ### 2. Configure environment
 
 ```bash
-cp .env.template .env.development
+cp .env.template .env
 ```
 
-Edit `.env.development` with your values — at minimum change `JWT_SECRET`:
+Edit `.env` with your values — at minimum change `JWT_SECRET`:
 
 ```env
 NODE_ENV=development
@@ -112,7 +112,7 @@ DB_NAME=auth_starter_dev
 DB_SYNCHRONIZE=true
 
 REDIS_HOST=nestjs-auth-starter-redis-dev
-REDIS_PORT=6379
+REDIS_PORT=6380
 REDIS_PASSWORD=redis_dev_password
 
 BCRYPT_SALT_ROUNDS=10
@@ -130,14 +130,14 @@ SESSION_TTL_MOBILE_MS=2592000000 # 30 days
 ### 3. Run with Docker Compose
 
 ```bash
-docker compose up -d
+docker compose -f docker-compose.development.yml --env-file .env up -d
 ```
 
 This starts:
 
-- **PostgreSQL** on port `5433`
-- **Redis** on the configured `REDIS_PORT`
-- **API** on port `4002` (maps to internal `4000`)
+- **PostgreSQL** on port `5434`
+- **Redis** on the configured `REDIS_PORT` (default `6380`)
+- **API** on port `4003` (maps to internal `4000`)
 
 ### 4. Run locally (without Docker)
 
@@ -149,7 +149,7 @@ pnpm start:dev
 
 ## API Endpoints
 
-Once running, visit **[http://localhost:4002/api](http://localhost:4002/api)** for the full Swagger UI.
+Once running, visit **[http://localhost:4003/api](http://localhost:4003/api)** for the full Swagger UI.
 
 | Method | Path             | Description                                   |
 | ------ | ---------------- | --------------------------------------------- |
@@ -174,24 +174,36 @@ pnpm lint           # Lint and auto-fix
 
 ### Development (hot-reload)
 
-```bash
-docker compose up
-```
-
-### Production build
+Uses `Dockerfile.dev` — installs all dependencies including devDependencies for watch mode.
 
 ```bash
-docker build -t nestjs-auth-starter .
-docker run -p 4000:4000 --env-file .env.production nestjs-auth-starter
+docker compose -f docker-compose.development.yml --env-file .env up -d --build
 ```
 
-The production image uses a multi-stage build — only compiled JS and production dependencies are included in the final image.
+### Production
+
+Uses `Dockerfile` — multi-stage build, only compiled JS and production dependencies in the final image.
+
+```bash
+docker compose -f docker-compose.production.yml --env-file .env up -d --build
+```
+
+### Makefile shortcuts
+
+A `Makefile` is included as a convenience wrapper for the most common Docker commands:
+
+```bash
+make dev-up      # Start all services (no rebuild)
+make dev-build   # Start all services and rebuild the API image
+make dev-down    # Stop and remove containers
+make help        # List all available commands
+```
 
 ## Customization Checklist
 
 When using this as a template, here is what you will typically want to change:
 
-- [ ] Rename the project in `package.json` and `docker-compose.yml`
+- [ ] Rename the project in `package.json`, `docker-compose.development.yml`, and `docker-compose.production.yml`
 - [ ] Set a strong `JWT_SECRET` in your production environment
 - [ ] Adjust `JWT_EXPIRES_IN`, `SESSION_TTL_WEB_MS`, `SESSION_TTL_MOBILE_MS` to your needs
 - [ ] Extend the `User` entity with your domain fields
