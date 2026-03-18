@@ -19,7 +19,8 @@ export class UserFindOneService {
       where: { id, isActive: true },
     });
 
-    if (!user) throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+    if (!user)
+      throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
 
     return user;
   }
