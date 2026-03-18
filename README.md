@@ -11,6 +11,8 @@
 </p>
 
 <p align="center">
+  <img src="https://github.com/your-org/nestjs-auth-starter/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  <img src="https://github.com/your-org/nestjs-auth-starter/actions/workflows/docker.yml/badge.svg" alt="Docker" />
   <img src="https://img.shields.io/badge/NestJS-11-E0234E?logo=nestjs" alt="NestJS" />
   <img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript" alt="TypeScript" />
   <img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql" alt="PostgreSQL" />
