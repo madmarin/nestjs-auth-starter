@@ -1,4 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
+jest.mock('src/config', () => ({
+  envs: {
+    session: { ttlMobileMs: 2592000000 },
+  },
+}));
+
 import { AuthLoginService } from './auth-login.service';
 import { AuthValidateCredentialsService } from '../validation';
 import { AuthCreateSessionService } from '../custom';

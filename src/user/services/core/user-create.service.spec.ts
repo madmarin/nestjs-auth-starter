@@ -11,6 +11,9 @@ jest.mock('src/config/envs.config', () => ({
   },
 }));
 
+jest.mock('bcryptjs');
+const mockedBcrypt = jest.mocked(bcrypt);
+
 const mockDto = (): CreateUserDto => ({
   email: 'new@example.com',
   password: 'Password123!',
@@ -68,25 +71,23 @@ describe('UserCreateService', () => {
 
   it('should hash the password before saving', async () => {
     userRepository.findOne.mockResolvedValue(null);
+    mockedBcrypt.hash.mockResolvedValue('hashed' as never);
     userRepository.create.mockReturnValue({
       ...mockSavedUser(),
       password: 'hashed',
     });
     userRepository.save.mockResolvedValue(mockSavedUser());
-    const hashSpy = jest
-      .spyOn(bcrypt, 'hash')
-      .mockResolvedValue('hashed' as never);
 
     await service.execute(mockDto());
 
-    expect(hashSpy).toHaveBeenCalledWith('Password123!', 10);
+    expect(mockedBcrypt.hash).toHaveBeenCalledWith('Password123!', 10);
   });
 
   it('should create and save the user with hashed password', async () => {
     const dto = mockDto();
     const saved = mockSavedUser();
     userRepository.findOne.mockResolvedValue(null);
-    jest.spyOn(bcrypt, 'hash').mockResolvedValue('hashed-password' as never);
+    mockedBcrypt.hash.mockResolvedValue('hashed-password' as never);
     userRepository.create.mockReturnValue(saved);
     userRepository.save.mockResolvedValue(saved);
 

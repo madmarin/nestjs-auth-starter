@@ -5,6 +5,9 @@ import { AuthValidateCredentialsService } from './auth-validate-credentials.serv
 import { UserFindByEmailService } from 'src/user/services/custom';
 import { UserEntity } from 'src/user/entities';
 
+jest.mock('bcryptjs');
+const mockedBcrypt = jest.mocked(bcrypt);
+
 const mockUser = (): UserEntity =>
   ({
     id: 1,
@@ -58,7 +61,7 @@ describe('AuthValidateCredentialsService', () => {
 
   it('should throw UnauthorizedException when password is invalid', async () => {
     userFindByEmailService.execute.mockResolvedValue(mockUser());
-    jest.spyOn(bcrypt, 'compare').mockResolvedValue(false as never);
+    mockedBcrypt.compare.mockResolvedValue(false as never);
 
     await expect(
       service.execute('test@example.com', 'wrong-pass'),
@@ -68,7 +71,7 @@ describe('AuthValidateCredentialsService', () => {
   it('should return the user when credentials are valid', async () => {
     const user = mockUser();
     userFindByEmailService.execute.mockResolvedValue(user);
-    jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never);
+    mockedBcrypt.compare.mockResolvedValue(true as never);
 
     const result = await service.execute(user.email, 'correct-pass');
 

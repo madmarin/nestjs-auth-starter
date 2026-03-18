@@ -1,5 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConflictException } from '@nestjs/common';
+
+jest.mock('src/config/envs.config', () => ({
+  envs: {
+    bcrypt: { saltRounds: 10 },
+  },
+}));
+
 import { AuthRegisterService } from './auth-register.service';
 import { UserCreateService } from 'src/user/services/core';
 import { UserEntity } from 'src/user/entities';
