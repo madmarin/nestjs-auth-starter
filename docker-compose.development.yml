@@ -33,7 +33,7 @@ services:
     env_file:
       - .env.development
     ports:
-      - "4003:4000"
+      - "${PORT}:${PORT}"
     volumes:
       - ./src:/usr/src/app/src
     restart: always
