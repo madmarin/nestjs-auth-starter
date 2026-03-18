@@ -1,98 +1,200 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <a href="http://nestjs.com/" target="blank">
+    <img src="https://nestjs.com/img/logo-small.svg" width="80" alt="Nest Logo" />
+  </a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<h1 align="center">NestJS Auth Starter</h1>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+<p align="center">
+  Production-ready authentication template built with NestJS — JWT access tokens, Redis-backed refresh sessions, PostgreSQL, and Swagger out of the box.
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+<p align="center">
+  <img src="https://img.shields.io/badge/NestJS-11-E0234E?logo=nestjs" alt="NestJS" />
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Redis-7-DC382D?logo=redis" alt="Redis" />
+  <img src="https://img.shields.io/badge/pnpm-latest-F69220?logo=pnpm" alt="pnpm" />
+  <img src="https://img.shields.io/badge/Docker-ready-2496ED?logo=docker" alt="Docker" />
+</p>
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## Features
 
-```bash
-$ pnpm install
+- **JWT Authentication** — short-lived access tokens (15 min default)
+- **Redis Sessions** — refresh tokens stored in Redis with configurable TTL per client type (web / mobile)
+- **PostgreSQL + TypeORM** — entity-based ORM with auto-sync for development
+- **Swagger UI** — auto-generated API docs at `/api`
+- **Rate Limiting** — global throttler via `@nestjs/throttler`
+- **Global Exception Filter** — unified error response shape
+- **Response Interceptor** — consistent success response envelope
+- **Environment Validation** — Joi schema validation on startup
+- **Multi-stage Docker build** — lean production image (~alpine)
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | NestJS 11 |
+| Language | TypeScript 5 |
+| Database | PostgreSQL 16 |
+| Cache / Sessions | Redis 7 |
+| ORM | TypeORM 0.3 |
+| Auth | JWT + bcryptjs |
+| Docs | Swagger / OpenAPI |
+| Runtime | Node.js 22 LTS |
+| Package manager | pnpm |
+
+## Project Structure
+
+```
+src/
+├── auth/
+│   ├── controllers/       # Login, logout, register, token refresh
+│   ├── decorators/        # @Auth(), @GetUser(), @Public()
+│   ├── dto/               # Login, register, JWT payload, session DTOs
+│   ├── guards/            # JwtAuthGuard
+│   ├── interfaces/        # Session metadata
+│   └── services/
+│       ├── core/          # Login, logout, register
+│       ├── custom/        # Session creation, token generation, refresh
+│       └── validation/    # Credential validation
+├── user/
+│   ├── entities/          # User entity
+│   └── services/
+│       ├── core/          # Create, find-one
+│       └── custom/        # Find-by-email
+├── common/
+│   ├── dto/               # ApiResponse envelope
+│   ├── entities/          # BaseEntity
+│   ├── filters/           # AllExceptionsFilter
+│   └── interceptors/      # ResponseInterceptor
+└── config/                # Env, TypeORM, Redis, Swagger, Throttle configs
 ```
 
-## Compile and run the project
+## Getting Started
+
+### Prerequisites
+
+- [Node.js 22+](https://nodejs.org)
+- [pnpm](https://pnpm.io)
+- [Docker + Docker Compose](https://docs.docker.com/compose/)
+
+### 1. Clone and install
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+git clone https://github.com/your-org/nestjs-auth-starter.git my-project
+cd my-project
+pnpm install
 ```
 
-## Run tests
+### 2. Configure environment
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+cp .env.template .env.development
 ```
 
-## Deployment
+Edit `.env.development` with your values — at minimum change `JWT_SECRET`:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+```env
+NODE_ENV=development
+PORT=4000
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+DB_HOST=nestjs-auth-starter-db-dev
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_NAME=auth_starter_dev
+DB_SYNCHRONIZE=true
+
+REDIS_HOST=nestjs-auth-starter-redis-dev
+REDIS_PORT=6379
+REDIS_PASSWORD=redis_dev_password
+
+BCRYPT_SALT_ROUNDS=10
+
+JWT_SECRET=change_this_for_a_long_random_secret
+JWT_EXPIRES_IN=15m
+
+THROTTLE_TTL=60000
+THROTTLE_LIMIT=100
+
+SESSION_TTL_WEB_MS=86400000      # 1 day
+SESSION_TTL_MOBILE_MS=2592000000 # 30 days
+```
+
+### 3. Run with Docker Compose
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+docker compose up -d
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+This starts:
+- **PostgreSQL** on port `5433`
+- **Redis** on the configured `REDIS_PORT`
+- **API** on port `4002` (maps to internal `4000`)
 
-## Resources
+### 4. Run locally (without Docker)
 
-Check out a few resources that may come in handy when working with NestJS:
+Point `DB_HOST` and `REDIS_HOST` to your local instances, then:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+pnpm start:dev
+```
 
-## Support
+## API Endpoints
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Once running, visit **[http://localhost:4002/api](http://localhost:4002/api)** for the full Swagger UI.
 
-## Stay in touch
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/auth/register` | Create a new account |
+| `POST` | `/auth/login` | Login, returns access + refresh tokens |
+| `POST` | `/auth/refresh` | Exchange refresh token for a new access token |
+| `POST` | `/auth/logout` | Invalidate the current session |
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Scripts
+
+```bash
+pnpm start:dev      # Development with watch mode
+pnpm start:prod     # Run compiled output
+pnpm build          # Compile TypeScript
+pnpm test           # Unit tests
+pnpm test:e2e       # End-to-end tests
+pnpm test:cov       # Coverage report
+pnpm lint           # Lint and auto-fix
+```
+
+## Docker
+
+### Development (hot-reload)
+
+```bash
+docker compose up
+```
+
+### Production build
+
+```bash
+docker build -t nestjs-auth-starter .
+docker run -p 4000:4000 --env-file .env.production nestjs-auth-starter
+```
+
+The production image uses a multi-stage build — only compiled JS and production dependencies are included in the final image.
+
+## Customization Checklist
+
+When using this as a template, here is what you will typically want to change:
+
+- [ ] Rename the project in `package.json` and `docker-compose.yml`
+- [ ] Set a strong `JWT_SECRET` in your production environment
+- [ ] Adjust `JWT_EXPIRES_IN`, `SESSION_TTL_WEB_MS`, `SESSION_TTL_MOBILE_MS` to your needs
+- [ ] Extend the `User` entity with your domain fields
+- [ ] Add your own modules alongside `auth/` and `user/`
+- [ ] Disable `DB_SYNCHRONIZE` and set up proper migrations before going to production
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT
