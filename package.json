@@ -1,6 +1,6 @@
 {
   "name": "nestjs-auth-starter",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "NestJS authentication starter template with JWT, Redis sessions, TypeORM, and Swagger",
   "author": "madmarin",
   "private": true,
