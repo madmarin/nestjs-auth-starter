@@ -26,6 +26,8 @@ services:
     depends_on:
       nestjs-auth-starter-db:
         condition: service_healthy
+      nestjs-auth-starter-redis:
+        condition: service_healthy
     env_file:
       - .env
     ports:
@@ -47,6 +49,10 @@ services:
     networks:
       - nestjs-auth-starter-network
     restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      timeout: 10s
+      retries: 5
 
 networks:
   nestjs-auth-starter-network:
