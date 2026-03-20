@@ -38,8 +38,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
           message = 'Validación fallida';
           errorDetails = responseObj.message;
         } else {
-          message = responseObj.error || this.getMessageFromStatus(status);
-          errorDetails = responseObj.message;
+          message =
+            (typeof responseObj.message === 'string'
+              ? responseObj.message
+              : null) || this.getMessageFromStatus(status);
+          errorDetails = undefined;
         }
       }
     } else if (this.isPostgresError(exception)) {
